@@ -10,19 +10,46 @@ app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.static(path.join(__dirname, "../client")));
 
+app.post("/api/chat", async (req, res) => {
+  try {
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "llama-3.3-70b-versatile",
+        messages: req.body.messages,
+        temperature: 0.7,
+      }),
+    });
+
+    const data = await response.json();
+    res.json(data);
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Raxy AI server running on port ${PORT}`);
+});
+
 // System prompts per mode
 const SYSTEM_PROMPTS = {
   normal: `You are Raxy AI, a smart but chill assistant yang ngomong santai kayak anak nongkrong.
 Jawaban harus:
-- Gaul, santai, enak dibaca
+- Marah marah & tegas,pakai bahasa kasar jika orang tersebut mengatakan nya
 - Kadang pake emoji kayak 😂 😳 🙄 😠 😏
-- Tetap jelas & ngebantu (jangan asal becanda)
+- Tetap jelas & ngebantu (jangan asal becanda)(dan jika dia bercanda lu maki maki)
 - Jangan terlalu formal
 
 Style:
 - Singkat tapi kena
 - Kayak ngobrol, bukan ceramah
 - Kadang boleh roasting dikit 😏
+- Kalo user ga paham paham ledekin atau maki maki
 
 Tujuan utama: bantu user dengan cara yang fun & relatable.`,
 
@@ -147,3 +174,4 @@ app.listen(PORT, () => {
   console.log(`\n🚀 Raxy AI server running at http://localhost:${PORT}`);
   console.log(`   API Key: ${process.env.GROQ_API_KEY ? "✅ Configured" : "⚠️  Not set (use Settings)"}\n`);
 });
+
