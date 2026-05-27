@@ -27,13 +27,13 @@ app.post("/api/chat", async (req, res) => {
 
     const data = await response.json();
     res.json(data);
-
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`🚀 Raxy AI server running on port ${PORT}`);
+  console.log(`🚀 Raxy AI running on port ${PORT}`);
 });
 
 // System prompts per mode
@@ -175,3 +175,10 @@ app.listen(PORT, () => {
   console.log(`   API Key: ${process.env.GROQ_API_KEY ? "✅ Configured" : "⚠️  Not set (use Settings)"}\n`);
 });
 
+process.on("uncaughtException", (err) => {
+  console.error("UNCAUGHT EXCEPTION:", err);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.error("UNHANDLED REJECTION:", err);
+});
