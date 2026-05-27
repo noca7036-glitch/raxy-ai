@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Raxy AI — Smart AI for Everything</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <!-- Marked.js for markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- highlight.js for code -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <span class="logo-icon">⬡</span>
+          <span class="logo-text">Raxy <span class="logo-accent">AI</span></span>
+        </div>
+        <button class="icon-btn sidebar-toggle-btn" id="sidebarToggle" title="Toggle sidebar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+
+      <button class="new-chat-btn" id="newChatBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        New Chat
+      </button>
+
+      <!-- Mode Selector -->
+      <div class="mode-section">
+        <p class="section-label">Mode</p>
+        <div class="mode-list" id="modeList">
+          <button class="mode-btn active" data-mode="normal">
+            <span class="mode-icon">🧠</span>
+            <span>Normal AI</span>
+          </button>
+          <button class="mode-btn" data-mode="trading">
+            <span class="mode-icon">📈</span>
+            <span>Trading</span>
+          </button>
+          <button class="mode-btn" data-mode="coding">
+            <span class="mode-icon">💻</span>
+            <span>Coding</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Chat History -->
+      <div class="history-section">
+        <p class="section-label">Recent Chats</p>
+        <div class="chat-list" id="chatList"></div>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <button class="footer-btn" id="settingsBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M4.93 19.07l1.41-1.41M19.07 19.07l-1.41-1.41M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+          Settings
+        </button>
+        <button class="footer-btn" id="themeToggle">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+          <span id="themeLabel">Light Mode</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main" id="main">
+      <!-- Top Bar -->
+      <header class="topbar">
+        <button class="icon-btn mobile-menu-btn" id="mobileMenuBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="topbar-center">
+          <span class="current-mode-badge" id="modeBadge">🧠 Normal AI</span>
+        </div>
+        <div class="topbar-right">
+          <button class="icon-btn" id="newChatTopBtn" title="New chat">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Chat Area -->
+      <div class="chat-area" id="chatArea">
+        <!-- Welcome screen -->
+        <div class="welcome-screen" id="welcomeScreen">
+          <div class="welcome-logo">
+            <span class="welcome-icon">⬡</span>
+          </div>
+          <h1 class="welcome-title">Raxy <span class="accent">AI</span></h1>
+          <p class="welcome-tagline">Smart AI for Everything</p>
+          <div class="suggestion-grid" id="suggestionGrid">
+            <button class="suggestion-card" data-prompt="Explain quantum computing in simple terms">
+              <span class="suggestion-icon">⚛️</span>
+              <span>Explain quantum computing simply</span>
+            </button>
+            <button class="suggestion-card" data-prompt="Write a Python script to scrape a website">
+              <span class="suggestion-icon">🐍</span>
+              <span>Write a Python web scraper</span>
+            </button>
+            <button class="suggestion-card" data-prompt="What are the best trading strategies for beginners?">
+              <span class="suggestion-icon">📊</span>
+              <span>Trading strategies for beginners</span>
+            </button>
+            <button class="suggestion-card" data-prompt="Help me debug this JavaScript code">
+              <span class="suggestion-icon">🔍</span>
+              <span>Debug my JavaScript code</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Messages container -->
+        <div class="messages" id="messages"></div>
+      </div>
+
+      <!-- Input Area -->
+      <div class="input-area">
+        <div class="input-wrapper">
+          <!-- Image preview -->
+          <div class="image-preview-area" id="imagePreviewArea" style="display:none;">
+            <div class="image-preview-inner">
+              <img id="imagePreview" src="" alt="Preview" />
+              <button class="remove-image-btn" id="removeImageBtn">✕</button>
+            </div>
+          </div>
+          <div class="input-row">
+            <label class="attach-btn icon-btn" title="Attach image" for="imageInput">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </label>
+            <input type="file" id="imageInput" accept="image/*" style="display:none;" />
+            <textarea
+              id="messageInput"
+              placeholder="Message Raxy AI..."
+              rows="1"
+              maxlength="8000"
+            ></textarea>
+            <button class="send-btn" id="sendBtn" disabled>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+          <div class="input-footer-row">
+            <span class="char-count" id="charCount">0 / 8000</span>
+            <span class="input-hint">Enter to send · Shift+Enter for new line</span>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>⚙️ Settings</h2>
+          <button class="icon-btn" id="closeSettings">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="setting-group">
+            <label>Groq API Key</label>
+            <div class="api-key-row">
+              <input type="password" id="apiKeyInput" placeholder="gsk_..." autocomplete="off" />
+              <button class="toggle-visibility" id="toggleApiKey">👁</button>
+            </div>
+            <p class="setting-hint">Get your key at <a href="https://console.groq.com" target="_blank">console.groq.com</a></p>
+          </div>
+
+          <div class="setting-group">
+            <label>Model</label>
+            <select id="modelSelect">
+              <option value="llama3-70b-8192">LLaMA 3 70B (Recommended)</option>
+              <option value="llama3-8b-8192">LLaMA 3 8B (Fast)</option>
+              <option value="mixtral-8x7b-32768">Mixtral 8x7B (32K context)</option>
+              <option value="gemma2-9b-it">Gemma 2 9B</option>
+              <option value="llama-3.1-8b-instant">LLaMA 3.1 8B Instant</option>
+            </select>
+          </div>
+
+          <div class="setting-group">
+            <label>Temperature: <span id="tempValue">0.7</span></label>
+            <input type="range" id="tempSlider" min="0" max="2" step="0.1" value="0.7" />
+            <div class="temp-labels">
+              <span>Precise</span><span>Balanced</span><span>Creative</span>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <label>Clear All Chats</label>
+            <button class="danger-btn" id="clearAllChats">🗑 Clear All Chat History</button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" id="cancelSettings">Cancel</button>
+          <button class="btn-primary" id="saveSettings">Save Settings</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rename Modal -->
+    <div class="modal-overlay" id="renameModal">
+      <div class="modal modal-sm">
+        <div class="modal-header">
+          <h2>✏️ Rename Chat</h2>
+          <button class="icon-btn" id="closeRename">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="text" id="renameInput" placeholder="Chat name..." maxlength="60" />
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" id="cancelRename">Cancel</button>
+          <button class="btn-primary" id="confirmRename">Rename</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Sidebar overlay for mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

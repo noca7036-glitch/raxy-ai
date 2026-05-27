@@ -1,0 +1,20 @@
+{
+  "name": "raxy-ai",
+  "version": "1.0.0",
+  "description": "Raxy AI - Smart AI for Everything",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "nodemon server/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.2",
+    "groq-sdk": "^1.2.0",
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
